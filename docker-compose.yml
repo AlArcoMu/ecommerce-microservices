@@ -1,0 +1,99 @@
+services:
+  # ---------- Bases de datos (una por servicio) ----------
+  users-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: users
+      POSTGRES_PASSWORD: users
+      POSTGRES_DB: usersdb
+    volumes:
+      - users_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U users"]
+      interval: 5s
+      retries: 5
+
+  products-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: products
+      POSTGRES_PASSWORD: products
+      POSTGRES_DB: productsdb
+    volumes:
+      - products_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U products"]
+      interval: 5s
+      retries: 5
+
+  orders-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: orders
+      POSTGRES_PASSWORD: orders
+      POSTGRES_DB: ordersdb
+    volumes:
+      - orders_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orders"]
+      interval: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+
+  # ---------- Microservicios ----------
+  users:
+    build: ./services/users
+    environment:
+      DATABASE_URL: postgresql://users:users@users-db:5432/usersdb
+      JWT_SECRET: ${JWT_SECRET:-cambia-esto-en-produccion}
+      ROOT_PATH: /api/users
+    depends_on:
+      users-db:
+        condition: service_healthy
+
+  products:
+    build: ./services/products
+    environment:
+      DATABASE_URL: postgresql://products:products@products-db:5432/productsdb
+      REDIS_URL: redis://redis:6379/0
+      ROOT_PATH: /api/products
+    depends_on:
+      products-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  orders:
+    build: ./services/orders
+    environment:
+      DATABASE_URL: postgresql://orders:orders@orders-db:5432/ordersdb
+      PRODUCTS_SERVICE_URL: http://products:8000
+      ROOT_PATH: /api/orders
+    depends_on:
+      orders-db:
+        condition: service_healthy
+      products:
+        condition: service_started
+
+  # ---------- API Gateway ----------
+  gateway:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - users
+      - products
+      - orders
+
+volumes:
+  users_data:
+  products_data:
+  orders_data:
