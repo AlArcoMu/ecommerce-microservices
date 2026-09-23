@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>arco · tienda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --canvas: #f2f4f5;
+    --white: #ffffff;
+    --ink: #000000;
+    --border: #ebebeb;
+    --muted: #787574;
+    --stone: #cccccc;
+    --violet: #5433eb;
+    --violet-wash: rgba(69,36,219,.34);
+    --font: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --shadow-card: rgba(0,0,0,.1) 0 4px 6px -1px, rgba(0,0,0,.1) 0 2px 4px -2px;
+    --shadow-sm: rgba(0,0,0,.06) 0 2px 8px 0;
+    --shadow-lg: rgba(0,0,0,.12) 0 4px 24px 0;
+    --max: 1200px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; font-family: var(--font); font-weight: 400;
+    font-size: 16px; line-height: 1.33; letter-spacing: -0.031em;
+    color: var(--ink); background: var(--canvas); -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  header.top { position: sticky; top: 0; z-index: 40; background: var(--canvas); padding: 16px 0; }
+  header.top .wrap { display: flex; align-items: center; gap: 24px; }
+  .wordmark { font-size: 24px; font-weight: 600; letter-spacing: -0.05em; }
+  .wordmark .dot { color: var(--violet); }
+  .search { flex: 1; max-width: 560px; display: flex; align-items: center; background: var(--white);
+    border: 1px solid rgba(0,0,0,.1); border-radius: 9999px; padding: 4px 4px 4px 20px; }
+  .search input { flex: 1; border: none; outline: none; background: transparent;
+    font-family: var(--font); font-size: 16px; letter-spacing: -0.031em; color: var(--ink); padding: 8px 0; }
+  .search input::placeholder { color: var(--muted); }
+  .search button { width: 44px; height: 44px; flex: 0 0 44px; border: none; border-radius: 9999px; cursor: pointer;
+    background: var(--violet); color: var(--white); box-shadow: 0 4px 24px var(--violet-wash);
+    display: flex; align-items: center; justify-content: center; }
+  .top-links { margin-left: auto; display: flex; gap: 20px; color: var(--muted); font-size: 14px; }
+  .top-links a:hover { color: var(--ink); }
+  @media (max-width: 720px) { .top-links { display: none; } .wordmark { font-size: 20px; } }
+
+  .hero { text-align: center; padding: 64px 24px 40px; }
+  .hero h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.05em; margin: 0 0 12px; }
+  .hero p { color: var(--muted); font-size: 16px; margin: 0; }
+  @media (max-width: 640px) { .hero h1 { font-size: 28px; } }
+
+  .section-head { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 600;
+    letter-spacing: -0.05em; margin: 0 0 24px; }
+  .section-head .count { color: var(--muted); font-weight: 400; font-size: 16px; letter-spacing: -0.031em; }
+
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding-bottom: 64px; }
+  @media (max-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .grid { grid-template-columns: 1fr; } }
+
+  .card { background: var(--white); border-radius: 28px; box-shadow: var(--shadow-card); padding: 8px;
+    display: flex; flex-direction: column; transition: transform .15s ease, box-shadow .15s ease; }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .card .imgwrap { border-radius: 20px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--canvas); }
+  .card .imgwrap img { width: 100%; height: 100%; object-fit: cover; }
+  .card .info { padding: 12px 10px 8px; display: flex; flex-direction: column; gap: 6px; }
+  .card .name { font-size: 14px; font-weight: 600; letter-spacing: -0.014em; }
+  .card .rating { font-size: 9px; letter-spacing: -0.058em; color: var(--ink); }
+  .card .rating .rev { color: var(--muted); }
+  .card .foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+  .card .price { font-size: 16px; font-weight: 600; letter-spacing: -0.031em; }
+  .card .stock { font-size: 11px; color: var(--muted); }
+  .btn-buy { border: none; cursor: pointer; background: var(--ink); color: var(--white); border-radius: 9999px;
+    font-family: var(--font); font-size: 13px; font-weight: 500; letter-spacing: -0.014em; padding: 8px 16px; margin-top: 10px; }
+  .btn-buy:disabled { background: var(--stone); cursor: default; }
+
+  .status { text-align: center; color: var(--muted); padding: 48px 0; grid-column: 1 / -1; }
+
+  .overlay { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.45);
+    display: none; align-items: center; justify-content: center; padding: 24px; }
+  .overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: 28px; max-width: 460px; width: 100%; padding: 24px; box-shadow: var(--shadow-lg); }
+  .modal .close { float: right; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; }
+  .modal .mhead { display: flex; gap: 16px; align-items: center; margin-bottom: 20px; }
+  .modal .mhead img { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; }
+  .modal .mhead .n { font-size: 16px; font-weight: 600; letter-spacing: -0.031em; }
+  .modal .mhead .p { color: var(--muted); font-size: 14px; }
+  .qty { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
+  .qty span { color: var(--muted); font-size: 14px; }
+  .stepper { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 9999px; overflow: hidden; }
+  .stepper button { width: 36px; height: 36px; border: none; background: var(--white); font-size: 18px; cursor: pointer; color: var(--ink); }
+  .stepper button:hover { background: var(--canvas); }
+  .stepper .val { width: 40px; text-align: center; font-size: 16px; font-weight: 600; }
+  .total-line { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--border); margin-top: 8px; }
+  .total-line .lbl { color: var(--muted); font-size: 14px; }
+  .total-line .amt { font-size: 22px; font-weight: 600; letter-spacing: -0.05em; }
+  .btn-primary { width: 100%; border: none; cursor: pointer; background: var(--ink); color: var(--white);
+    border-radius: 9999px; padding: 16px; font-family: var(--font); font-size: 15px; font-weight: 600; letter-spacing: -0.014em; }
+  .btn-primary:disabled { background: var(--stone); }
+  .note { text-align: center; color: var(--muted); font-size: 12px; margin-top: 14px; }
+  .confirm { text-align: center; padding: 8px 0; }
+  .confirm .check { width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 9999px; background: var(--violet); color: var(--white);
+    display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 24px var(--violet-wash); }
+  .confirm h3 { font-size: 22px; font-weight: 600; letter-spacing: -0.05em; margin: 0 0 4px; }
+  .confirm .ref { font-weight: 600; font-size: 18px; margin: 12px 0; }
+  .confirm p { color: var(--muted); font-size: 14px; margin: 4px 0; }
+
+  footer { background: var(--ink); color: var(--white); padding: 56px 0; margin-top: 32px; }
+  .fcols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .fcol h4 { font-weight: 500; font-size: 14px; margin: 0 0 14px; }
+  .fcol a { display: block; font-size: 14px; color: var(--white); margin-bottom: 10px; opacity: .85; }
+  .fcol a:hover { opacity: 1; text-decoration: underline; }
+  .copyright { color: var(--stone); font-size: 12px; margin-top: 40px; }
+  @media (max-width: 720px) { .fcols { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="wordmark" href="#top">arco<span class="dot">.</span></a>
+    <div class="search">
+      <input id="q" type="text" placeholder="¿Qué estás buscando hoy?" />
+      <button id="qbtn" aria-label="Buscar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="top-links">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <h1>Encuentra lo que buscas</h1>
+  <p>Productos seleccionados, listos para pedir.</p>
+</section>
+
+<main class="wrap" id="catalogo">
+  <div class="section-head">Catálogo <span class="count" id="count"></span></div>
+  <div class="grid" id="grid">
+    <div class="status" id="status">Cargando productos…</div>
+  </div>
+</main>
+
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+
+<footer id="contacto">
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fcol"><h4>Comprar</h4><a href="#catalogo">Catálogo</a><a href="#">Novedades</a><a href="#">Ofertas</a></div>
+      <div class="fcol"><h4>Tienda</h4><a href="#">Sobre nosotros</a><a href="#">Envíos</a><a href="#">Devoluciones</a></div>
+      <div class="fcol"><h4>Legal</h4><a href="#">Aviso legal</a><a href="#">Privacidad</a><a href="#">Cookies</a></div>
+      <div class="fcol"><h4>Síguenos</h4><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">LinkedIn</a></div>
+    </div>
+    <p class="copyright">© 2026 arco · Proyecto de portfolio · Sin transacción real de pago</p>
+  </div>
+</footer>
+
+<script>
+const API_BASE = "";
+const eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
+const FALLBACK_IMG = "https://picsum.photos/seed/arco-default/600/600";
+
+const DEMO = [
+  { id:1, name:'Auriculares inalámbricos', description:'Cancelación de ruido', price:129.99, stock:20, image_url:'https://picsum.photos/seed/auriculares/600/600' },
+  { id:2, name:'Reloj inteligente',        description:'GPS y monitor cardíaco', price:199.00, stock:12, image_url:'https://picsum.photos/seed/reloj/600/600' },
+  { id:3, name:'Zapatillas running',       description:'Ligeras y transpirables', price:89.95, stock:35, image_url:'https://picsum.photos/seed/zapatillas/600/600' },
+  { id:4, name:'Mochila urbana',           description:'Compartimento portátil 15"', price:54.50, stock:40, image_url:'https://picsum.photos/seed/mochila/600/600' },
+  { id:5, name:'Cámara compacta',          description:'4K · estabilización óptica', price:349.00, stock:6, image_url:'https://picsum.photos/seed/camara/600/600' },
+  { id:6, name:'Altavoz portátil',         description:'Bluetooth · resistente al agua', price:69.90, stock:25, image_url:'https://picsum.photos/seed/altavoz/600/600' },
+  { id:7, name:'Teclado mecánico',         description:'Retroiluminado · switches rojos', price:99.00, stock:18, image_url:'https://picsum.photos/seed/teclado/600/600' },
+  { id:8, name:'Gafas de sol',             description:'Polarizadas · UV400', price:39.99, stock:50, image_url:'https://picsum.photos/seed/gafas/600/600' },
+];
+
+let PRODUCTS = [];
+let FILTER = "";
+
+async function load() {
+  try {
+    const res = await fetch(`${API_BASE}/api/products/products`, { headers: { 'Accept':'application/json' } });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error();
+    PRODUCTS = data;
+  } catch (e) { PRODUCTS = DEMO; }
+  render();
+}
+
+function render() {
+  const grid = document.getElementById('grid');
+  const term = FILTER.trim().toLowerCase();
+  const list = PRODUCTS.filter(p => !term || (p.name + ' ' + (p.description||'')).toLowerCase().includes(term));
+  document.getElementById('count').textContent = `· ${list.length} producto${list.length===1?'':'s'}`;
+  if (list.length === 0) {
+    grid.innerHTML = `<div class="status">No hay productos que coincidan con “${escapeHtml(FILTER)}”.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p => {
+    const img = p.image_url || FALLBACK_IMG;
+    const agotado = (p.stock ?? 0) <= 0;
+    return `
+      <article class="card">
+        <div class="imgwrap"><img src="${escapeAttr(img)}" alt="${escapeAttr(p.name)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'"></div>
+        <div class="info">
+          <div class="name">${escapeHtml(p.name)}</div>
+          <div class="rating">★★★★★ <span class="rev">(${20 + (p.id*7)%180})</span></div>
+          <div class="foot">
+            <span class="price">${eur.format(p.price)}</span>
+            <span class="stock">${agotado ? 'Agotado' : p.stock + ' uds'}</span>
+          </div>
+          <button class="btn-buy" ${agotado?'disabled':''} data-id="${p.id}">${agotado ? 'No disponible' : 'Comprar'}</button>
+        </div>
+      </article>`;
+  }).join('');
+  grid.querySelectorAll('.btn-buy:not([disabled])').forEach(b => b.addEventListener('click', () => openBuy(Number(b.dataset.id))));
+}
+
+document.getElementById('q').addEventListener('input', e => { FILTER = e.target.value; render(); });
+document.getElementById('qbtn').addEventListener('click', () => render());
+
+const overlay = document.getElementById('overlay');
+const modal = document.getElementById('modal');
+let qty = 1;
+
+function openBuy(id) { const p = PRODUCTS.find(x => x.id === id); qty = 1; drawBuy(p); overlay.classList.add('open'); }
+function closeModal(){ overlay.classList.remove('open'); }
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+function drawBuy(p) {
+  const img = p.image_url || FALLBACK_IMG;
+  modal.innerHTML = `
+    <span class="close" id="close">&times;</span>
+    <div class="mhead">
+      <img src="${escapeAttr(img)}" alt="" onerror="this.src='${FALLBACK_IMG}'">
+      <div><div class="n">${escapeHtml(p.name)}</div><div class="p">${eur.format(p.price)} · ${p.stock} uds</div></div>
+    </div>
+    <div class="qty">
+      <span>Cantidad</span>
+      <div class="stepper"><button id="minus">−</button><div class="val" id="val">${qty}</div><button id="plus">+</button></div>
+    </div>
+    <div class="total-line"><span class="lbl">Total</span><span class="amt" id="total">${eur.format(p.price*qty)}</span></div>
+    <button class="btn-primary" id="buy">Realizar pedido</button>
+    <p class="note">Sin pago online. Simula la creación de un pedido en tu API.</p>`;
+  document.getElementById('close').onclick = closeModal;
+  document.getElementById('minus').onclick = () => { if(qty>1){qty--; upd(p);} };
+  document.getElementById('plus').onclick  = () => { if(qty<p.stock){qty++; upd(p);} };
+  document.getElementById('buy').onclick   = () => doOrder(p);
+}
+function upd(p){ document.getElementById('val').textContent = qty; document.getElementById('total').textContent = eur.format(p.price*qty); }
+
+async function doOrder(p) {
+  const btn = document.getElementById('buy');
+  btn.disabled = true; btn.textContent = 'Procesando…';
+  let ref=null, demo=false;
+  try {
+    const res = await fetch(`${API_BASE}/api/orders/orders`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ product_id: p.id, quantity: qty })
+    });
+    if (!res.ok) throw new Error();
+    ref = (await res.json()).id;
+  } catch(e){ demo=true; ref = Math.floor(1000+Math.random()*9000); }
+  modal.innerHTML = `
+    <div class="confirm">
+      <div class="check">&#10003;</div>
+      <h3>¡Pedido confirmado!</h3>
+      <p>${escapeHtml(p.name)} · ${qty} ud${qty>1?'s':''}</p>
+      <p class="ref">Referencia #${ref}</p>
+      <p>Total: ${eur.format(p.price*qty)}</p>
+      <button class="btn-primary" id="done" style="margin-top:16px">Seguir comprando</button>
+      ${demo?'<p class="note">Referencia de demostración (API no conectada).</p>':''}
+    </div>`;
+  document.getElementById('done').onclick = () => { closeModal(); load(); };
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function escapeAttr(s){ return escapeHtml(s); }
+
+load();
+</script>
+</body>
+</html>
