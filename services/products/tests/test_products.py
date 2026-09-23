@@ -25,7 +25,8 @@ def test_health():
 
 
 def test_create_and_get():
-    r = client.post("/products", json={"name": "Camiseta", "price": 19.99, "stock": 10})
+    r = client.post("/products", json={"name": "Camiseta", "price": 19.99, "stock": 10,
+                                       "image_url": "https://picsum.photos/seed/camiseta/600"})
     assert r.status_code == 201
     pid = r.json()["id"]
 
@@ -35,7 +36,8 @@ def test_create_and_get():
 
 
 def test_reserve_stock():
-    pid = client.post("/products", json={"name": "Gorra", "price": 9.5, "stock": 3}).json()["id"]
+    pid = client.post("/products", json={"name": "Gorra", "price": 9.5, "stock": 3,
+                                         "image_url": "https://picsum.photos/seed/gorra/600"}).json()["id"]
     r = client.post(f"/products/{pid}/reserve", json={"quantity": 2})
     assert r.status_code == 200
     assert r.json()["stock"] == 1
@@ -43,3 +45,10 @@ def test_reserve_stock():
     # stock insuficiente
     r = client.post(f"/products/{pid}/reserve", json={"quantity": 5})
     assert r.status_code == 409
+
+def test_update_stock():
+    pid = client.post("/products", json={"name": "Bufanda", "price": 12.0, "stock": 5,
+                                         "image_url": "https://picsum.photos/seed/bufanda/600"}).json()["id"]
+    r = client.patch(f"/products/{pid}/stock", json={"stock": 42})
+    assert r.status_code == 200
+    assert r.json()["stock"] == 42
