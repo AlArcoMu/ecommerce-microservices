@@ -61,4 +61,4 @@ jobs:
         with:
           context: services/${{ matrix.service }}
           push: true
-          tags: ghcr.io/${{ steps.repo.outputs.name }}/${{ matrix.service }}:latestñ
+          tags: ghcr.io/${{ steps.repo.outputs.name }}/${{ matrix.service }}:latest
