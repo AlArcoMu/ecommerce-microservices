@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 
 from .config import settings
 from .database import init_db, get_session
-from .models import Product, ProductCreate, ProductRead, StockUpdate
+from .models import Product, ProductCreate, ProductRead, StockUpdate, StockSet
 from .cache import cache_get, cache_set, cache_delete
 
 app = FastAPI(title="Users Service", version="1.0.0", root_path=settings.root_path)
@@ -66,4 +66,19 @@ def reserve_stock(product_id: int, data: StockUpdate, session: Session = Depends
     session.commit()
     session.refresh(product)
     cache_delete(f"product:{product_id}", "products:all")
+    return product
+
+@app.patch("/products/{product_id}/stock", response_model=ProductRead)
+def update_stock(product_id: int, data: StockSet, session: Session = Depends(get_session)):
+    """Fija el stock de un producto a un valor concreto."""
+    product = session.get(Product, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    if data.stock < 0:
+        raise HTTPException(status_code=400, detail="El stock no puede ser negativo")
+    product.stock = data.stock
+    session.add(product)
+    session.commit()
+    session.refresh(product)
+    cache_delete(f"product:{product_id}", "products:all")  # invalida la caché
     return product

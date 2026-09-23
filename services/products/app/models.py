@@ -10,6 +10,7 @@ class Product(SQLModel, table=True):
     description: str = ""
     price: float
     stock: int = 0
+    image_url: str = ""
 
 
 class ProductCreate(BaseModel):
@@ -17,6 +18,7 @@ class ProductCreate(BaseModel):
     description: str = ""
     price: float
     stock: int = 0
+    image_url: str          # obligatorio: cada producto debe tener imagen
 
 
 class ProductRead(BaseModel):
@@ -25,7 +27,11 @@ class ProductRead(BaseModel):
     description: str
     price: float
     stock: int
+    image_url: str
 
 
 class StockUpdate(BaseModel):
-    quantity: int  # cantidad a descontar (positiva)
+    quantity: int
+
+class StockSet(BaseModel):
+    stock: int
