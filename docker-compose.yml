@@ -60,9 +60,10 @@ services:
   products:
     build: ./services/products
     environment:
-      DATABASE_URL: postgresql://products:products@products-db:5432/productsdb
-      REDIS_URL: redis://redis:6379/0
-      ROOT_PATH: /api/products
+         DATABASE_URL: postgresql://products:products@products-db:5432/productsdb
+         REDIS_URL: redis://redis:6379/0
+         ROOT_PATH: /api/products
+         JWT_SECRET: ${JWT_SECRET:-cambia-esto-en-produccion}
     depends_on:
       products-db:
         condition: service_healthy
