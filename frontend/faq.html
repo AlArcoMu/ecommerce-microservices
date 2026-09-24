@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Producto · alarcomushop</title>
-<meta name="description" content="Ficha de producto en alarcomushop: galería de fotos, descripción, valoraciones de usuarios y compra rápida.">
+<title>FAQ · alarcomushop</title>
+<meta name="description" content="Preguntas frecuentes de alarcomushop: cómo comprar, envíos, devoluciones, cuenta y valoraciones.">
 <meta name="theme-color" content="#5433eb">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Producto · alarcomushop">
-<meta property="og:description" content="Ficha de producto en alarcomushop: galería de fotos, descripción, valoraciones de usuarios y compra rápida.">
+<meta property="og:title" content="FAQ · alarcomushop">
+<meta property="og:description" content="Preguntas frecuentes de alarcomushop: cómo comprar, envíos, devoluciones, cuenta y valoraciones.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -30,11 +30,20 @@
     </nav>
   </div>
 </header>
-<main class="wrap detail">
+<main class="wrap faq-page">
   <a class="back" href="index.html#catalogo">&larr; Volver al catálogo</a>
-  <div id="detail-body"></div>
+  <h1 class="cart-title">Preguntas frecuentes</h1>
+
+  <div class="faq">
+    <details><summary>¿Cómo hago un pedido?</summary><p>Añade productos al carrito y ve a la página del carrito. Rellena el formulario de datos y confirma. Es una demostración: no se realiza ningún cobro real.</p></details>
+    <details><summary>¿Necesito una cuenta para comprar?</summary><p>No para comprar, pero sí para dejar valoraciones. Puedes registrarte desde "Iniciar sesión" en la parte superior.</p></details>
+    <details><summary>¿Cuáles son los plazos de envío?</summary><p>Consulta la página de <a href="envios.html">Envíos</a>. Península 24-48h, resto según destino (datos de ejemplo).</p></details>
+    <details><summary>¿Puedo devolver un producto?</summary><p>Sí, dispondrías de 14 días. Consulta la política de <a href="devoluciones.html">Devoluciones</a>.</p></details>
+    <details><summary>¿Cómo dejo una valoración?</summary><p>Entra en un producto, inicia sesión y usa el formulario de valoración con estrellas y comentario.</p></details>
+    <details><summary>¿Este sitio es una tienda real?</summary><p>No. Es un proyecto de portfolio que demuestra microservicios con Docker y CI/CD. Más en <a href="sobre-nosotros.html">Sobre nosotros</a>.</p></details>
+  </div>
+
 </main>
-<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
 <footer id="contacto">
   <div class="wrap">
     <div class="fcols">
@@ -53,6 +62,5 @@
 </footer>
 <script src="common.js"></script>
 <script src="auth.js"></script>
-<script src="producto.js"></script>
 </body>
 </html>
