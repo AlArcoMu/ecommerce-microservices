@@ -12,7 +12,7 @@ class Product(SQLModel, table=True):
     description: str = ""
     price: float
     stock: int = 0
-    # Varias imágenes (la primera es la portada). Se guarda como JSON.
+    category: str = Field(default="otros", index=True)   # p.ej. electronica, audiovisuales
     images: list[str] = Field(default_factory=list, sa_column=Column(JSON))
 
 
@@ -20,18 +20,19 @@ class Review(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     product_id: int = Field(index=True)
     user_email: str
-    rating: int                 # 1 a 5
+    rating: int
     comment: str = ""
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
-# --------- Esquemas de entrada/salida ---------
+# --------- Esquemas ---------
 class ProductCreate(BaseModel):
     name: str
     description: str = ""
     price: float
     stock: int = 0
-    images: list[str]           # obligatorio: al menos una imagen
+    category: str = "otros"
+    images: list[str]
 
 
 class ProductRead(BaseModel):
@@ -40,15 +41,16 @@ class ProductRead(BaseModel):
     description: str
     price: float
     stock: int
+    category: str
     images: list[str]
 
 
 class StockUpdate(BaseModel):
-    quantity: int               # cantidad a descontar (reserva)
+    quantity: int
 
 
 class StockSet(BaseModel):
-    stock: int                  # fija el stock a este valor
+    stock: int
 
 
 class ReviewCreate(BaseModel):

@@ -202,3 +202,97 @@ a.card { text-decoration: none; color: inherit; }
 .dot.on { background: #fff; }
 /* En móvil/táctil las flechas siempre visibles (no hay hover) */
 @media (hover: none) { .card-nav { opacity: 1; } }
+
+/* ============ Cabecera / menú móvil ============ */
+.hamburger { order: 2; }
+
+/* ============ Toolbar: filtros y orden ============ */
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--border); background: var(--white); border-radius: 9999px; padding: 8px 16px;
+  font-family: var(--font); font-size: 14px; cursor: pointer; box-shadow: var(--shadow-sm); transition: all .15s; }
+.chip:hover { border-color: var(--violet); }
+.chip.on { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.sort { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.sort select { font-family: var(--font); font-size: 14px; padding: 8px 12px; border: 1px solid var(--border);
+  border-radius: 9999px; background: var(--white); cursor: pointer; }
+
+/* ============ Tag de categoría ============ */
+.cat-tag { display: inline-block; font-size: 11px; color: var(--violet); font-weight: 600; text-transform: uppercase;
+  letter-spacing: .04em; margin-bottom: 4px; }
+
+/* ============ Card: media enlazada + botón añadir ============ */
+.card-media { display: block; }
+a.name { text-decoration: none; color: inherit; }
+a.name:hover { color: var(--violet); }
+.btn-add { margin-top: 10px; border: none; cursor: pointer; background: var(--ink); color: var(--white);
+  border-radius: 9999px; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px 16px; transition: background .15s; }
+.btn-add:hover { background: var(--violet); }
+.btn-add:disabled { background: var(--stone); cursor: default; }
+
+/* ============ Skeleton (animación de carga) ============ */
+.skeleton { pointer-events: none; }
+.sk, .sk-line { position: relative; overflow: hidden; background: #e9ebee; }
+.imgwrap.sk { aspect-ratio: 1/1; border-radius: 20px; }
+.sk-line { height: 14px; border-radius: 8px; margin: 10px; }
+.sk-line.short { width: 50%; }
+.skeleton .info { padding: 4px; }
+.sk::after, .sk-line::after { content:""; position:absolute; inset:0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent);
+  transform: translateX(-100%); animation: shimmer 1.3s infinite; }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+/* ============ Botón fantasma / copiar ============ */
+.btn-ghost { margin-top: 14px; border: 1px solid var(--border); background: var(--white); border-radius: 9999px;
+  padding: 10px 18px; font-family: var(--font); font-size: 14px; cursor: pointer; transition: all .15s; }
+.btn-ghost:hover { border-color: var(--violet); color: var(--violet); }
+.qty-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+.qty-row .btn-primary { width: auto; padding: 14px 32px; }
+
+/* ============ Mostrar/ocultar contraseña ============ */
+.pass-wrap { position: relative; }
+.pass-wrap input { padding-right: 44px; }
+.pass-toggle { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: none; background: none;
+  cursor: pointer; font-size: 16px; padding: 6px; }
+
+/* ============ Mensajes de formulario (éxito/error) ============ */
+.form-msg { font-size: 13px; min-height: 16px; margin: 4px 0 12px; }
+.form-msg.err { color: #c0392b; }
+.form-msg.ok { color: #1e8449; }
+
+/* ============ Página de carrito ============ */
+.cart-page { padding-top: 8px; }
+.cart-title { font-size: 32px; font-weight: 600; letter-spacing: -0.05em; margin: 8px 0 24px; }
+.cart-layout { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start; margin-bottom: 64px; }
+@media (max-width: 820px) { .cart-layout { grid-template-columns: 1fr; } }
+.cart-items { display: flex; flex-direction: column; gap: 12px; }
+.cart-item { display: grid; grid-template-columns: 72px 1fr auto auto auto; gap: 16px; align-items: center;
+  background: var(--white); border-radius: 20px; padding: 12px; box-shadow: var(--shadow-sm); }
+.cart-item img { width: 72px; height: 72px; border-radius: 14px; object-fit: cover; }
+.ci-name { font-weight: 600; font-size: 15px; }
+.ci-price { color: var(--muted); font-size: 13px; }
+.ci-sub { font-weight: 600; min-width: 72px; text-align: right; }
+.ci-remove { border: none; background: none; font-size: 22px; color: var(--muted); cursor: pointer; }
+.ci-remove:hover { color: #c0392b; }
+.cart-summary { background: var(--white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-card); position: sticky; top: 90px; }
+.cart-summary h3 { margin: 0 0 16px; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; }
+.sum-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 15px; color: #333; }
+.sum-line.total { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 14px; font-size: 20px; font-weight: 600; }
+.checkout-form { margin-top: 20px; }
+.cart-empty { text-align: center; padding: 60px 0; color: var(--muted); }
+
+/* ============ FAQ (desplegables) ============ */
+.faq { max-width: 760px; margin-bottom: 64px; }
+.faq details { background: var(--white); border-radius: 16px; box-shadow: var(--shadow-sm); margin-bottom: 12px; overflow: hidden; }
+.faq summary { cursor: pointer; padding: 18px 20px; font-weight: 600; font-size: 16px; list-style: none;
+  display: flex; justify-content: space-between; align-items: center; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-size: 22px; color: var(--violet); font-weight: 400; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { margin: 0; padding: 0 20px 20px; color: #444; font-size: 15px; line-height: 1.6; }
+.faq details a { color: var(--violet); }
+
+/* ============ Validación: error por campo y ayuda ============ */
+.field-err { display: block; color: #c0392b; font-size: 12px; margin-top: 4px; min-height: 14px; }
+.hint { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+.field input:focus { border-color: var(--violet); }

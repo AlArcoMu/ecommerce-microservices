@@ -33,10 +33,11 @@ def test_health():
 
 
 def test_create_and_get():
-    r = client.post("/products", json={"name": "Camiseta", "price": 19.99, "stock": 10, "images": IMG})
+    r = client.post("/products", json={"name": "Camiseta", "price": 19.99, "stock": 10, "category": "moda", "images": IMG})
     assert r.status_code == 201
     body = r.json()
     assert body["images"] == IMG
+    assert body["category"] == "moda"
     pid = body["id"]
 
     r = client.get(f"/products/{pid}")

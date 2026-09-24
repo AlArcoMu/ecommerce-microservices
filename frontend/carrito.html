@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Producto · alarcomushop</title>
-<meta name="description" content="Ficha de producto en alarcomushop: galería de fotos, descripción, valoraciones de usuarios y compra rápida.">
+<title>Carrito · alarcomushop</title>
+<meta name="description" content="Revisa los productos de tu carrito y finaliza tu pedido en alarcomushop.">
 <meta name="theme-color" content="#5433eb">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Producto · alarcomushop">
-<meta property="og:description" content="Ficha de producto en alarcomushop: galería de fotos, descripción, valoraciones de usuarios y compra rápida.">
+<meta property="og:title" content="Carrito · alarcomushop">
+<meta property="og:description" content="Revisa los productos de tu carrito y finaliza tu pedido en alarcomushop.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -30,9 +30,10 @@
     </nav>
   </div>
 </header>
-<main class="wrap detail">
-  <a class="back" href="index.html#catalogo">&larr; Volver al catálogo</a>
-  <div id="detail-body"></div>
+<main class="wrap cart-page">
+  <a class="back" href="index.html#catalogo">&larr; Seguir comprando</a>
+  <h1 class="cart-title">Tu carrito</h1>
+  <div class="cart-layout" id="cart-layout"></div>
 </main>
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
 <footer id="contacto">
@@ -53,6 +54,6 @@
 </footer>
 <script src="common.js"></script>
 <script src="auth.js"></script>
-<script src="producto.js"></script>
+<script src="cart.js"></script>
 </body>
 </html>
